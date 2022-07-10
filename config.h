@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 5;        /* gaps between windows */
+static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -12,7 +12,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#9e32a8";
+static const char col_cyan[]        = "#9e32a8"; // purple color
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -21,6 +21,11 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *upvol[]   = { "amixer", "set", "Master", "5%+",     NULL };
+static const char *downvol[] = { "amixer", "set", "Master", "5%-",     NULL };
+static const char *mutevol[] = { "amixer", "set", "Master", "toggle", NULL };
+static const char *brightdown[] = {"brightnessctl", "set", "10%-" };
+static const char *brightup[] = {"brightnessctl", "set", "10%+" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -29,7 +34,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       1,           -1 },
 };
 
 /* layout(s) */
@@ -53,6 +58,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -93,6 +99,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } }, 
 	{ MODKEY,			XK_m,	   shiftview,	   {.i = +1 } },
 	{ MODKEY,			XK_n,      shiftview,	   {.i = -1 } },
+	{ MODKEY,                       XK_Right,  spawn,          {.v = upvol   } },
+	{ MODKEY,                       XK_Left,   spawn,          {.v = downvol } },
+	{ MODKEY,                       XK_End,    spawn,          {.v = mutevol } },
+	{ MODKEY,			XK_Up,     spawn,	   {.v = brightup} },
+	{ MODKEY,			XK_Down,     spawn,	   {.v = brightdown} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

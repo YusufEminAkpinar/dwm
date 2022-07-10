@@ -21,6 +21,11 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *upvol[]   = { "amixer", "set", "Master", "5%+",     NULL };
+static const char *downvol[] = { "amixer", "set", "Master", "5%-",     NULL };
+static const char *mutevol[] = { "amixer", "set", "Master", "toggle", NULL };
+static const char *brightdown[] = {"brightnessctl", "set", "10%-" };
+static const char *brightup[] = {"brightnessctl", "set", "10%+" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -51,11 +56,9 @@ static const Layout layouts[] = {
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,    +	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
-+	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
-+	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
-          KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -96,6 +99,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } }, 
 	{ MODKEY,			XK_m,	   shiftview,	   {.i = +1 } },
 	{ MODKEY,			XK_n,      shiftview,	   {.i = -1 } },
+	{ MODKEY,                       XK_Right,  spawn,          {.v = upvol   } },
+	{ MODKEY,                       XK_Left,   spawn,          {.v = downvol } },
+	{ MODKEY,                       XK_End,    spawn,          {.v = mutevol } },
+	{ MODKEY,			XK_Up,     spawn,	   {.v = brightup} },
+	{ MODKEY,			XK_Down,     spawn,	   {.v = brightdown} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
